@@ -247,6 +247,7 @@ var config = {
         ],
         alias: {
             jquery: 'jquery/src/jquery',
+            'mattermost-redux': 'packages/mattermost-redux',
             superagent: 'node_modules/superagent/lib/client',
         },
         extensions: ['.js', '.jsx', '.ts', '.tsx'],

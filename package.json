@@ -198,7 +198,8 @@
       "^.+\\.(jpg|jpeg|png|apng|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "identity-obj-proxy",
       "^.+\\.(css|less|scss)$": "identity-obj-proxy",
       "^.*i18n.*\\.(json)$": "<rootDir>/tests/i18n_mock.json",
-      "^bundle-loader\\?lazy\\!(.*)$": "$1"
+      "^bundle-loader\\?lazy\\!(.*)$": "$1",
+      "^mattermost-redux/(.*)$": "packages/mattermost-redux/src/$1"
     },
     "moduleDirectories": [
       "",
@@ -245,6 +246,7 @@
     "mmjstool": "mmjstool",
     "storybook": "start-storybook -p 6006 -s ./storybook/static",
     "build-storybook": "build-storybook -s ./storybook/static",
-    "check-types": "tsc"
+    "check-types": "tsc",
+    "postinstall": "lerna bootstrap"
   }
 }
