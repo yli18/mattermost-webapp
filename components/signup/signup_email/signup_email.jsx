@@ -278,6 +278,13 @@ export default class SignupEmail extends React.PureComponent {
         }
     }
 
+    handleCheckboxChange = () => {
+        this.setState((prevState) => ({
+            ...prevState,
+            isTermAgreed: !this.state.isTermAgreed,
+        }));
+    }
+
     renderEmailSignup = () => {
         let emailError = null;
         let emailHelpText = (
@@ -342,6 +349,41 @@ export default class SignupEmail extends React.PureComponent {
         if (this.state.email) {
             emailContainerStyle = 'hidden';
         }
+
+        // const { siteName } = this.props
+        let siteName = 'Minerva Messenger'
+        let termsOfServiceLink = 'https://keeper.mpdl.mpg.de/f/4ffeb11fd7384234b04a/'
+        let privacyPolicyLink = 'https://keeper.mpdl.mpg.de/f/4ffeb11fd7384234b04a/'
+
+        let terms = (
+            <div className='mt-8'>
+                <p id='signup_agreement'>
+                    <FormattedMarkdownMessage
+                        id='create_team.agreement'
+                        defaultMessage='By proceeding to create your account and use {siteName}, you agree to our [Terms of Service]({TermsOfServiceLink}) and [Privacy Policy]({PrivacyPolicyLink}). If you do not agree, you cannot use {siteName}.'
+                        values={{
+                            siteName,
+                            TermsOfServiceLink: `!${termsOfServiceLink}`,
+                            PrivacyPolicyLink: `!${privacyPolicyLink}`,
+                        }}
+                    />
+                </p>
+                <label className='checkbox-inline'>
+                    <input
+                        type='checkbox'
+                        ref='signup_terms'
+                        defaultChecked={false}
+                        name='signup.terms.agree'
+                        disabled={false}
+                        onChange={this.handleCheckboxChange}
+                    />
+                    <FormattedMessage
+                        id='signup.terms.agree'
+                        defaultMessage='I Agree'
+                    />
+                </label>
+            </div>
+        );
 
         return (
             <form>
@@ -419,13 +461,14 @@ export default class SignupEmail extends React.PureComponent {
                             {passwordError}
                         </div>
                     </div>
+                    {terms}
                     <p className='mt-5'>
                         <button
                             id='createAccountButton'
                             type='submit'
                             onClick={this.handleSubmit}
                             className='btn-primary btn'
-                            disabled={this.state.isSubmitting}
+                            disabled={this.state.isSubmitting || !this.state.isTermAgreed}
                         >
                             <FormattedMessage
                                 id='signup_user_completed.create'
@@ -448,7 +491,6 @@ export default class SignupEmail extends React.PureComponent {
             termsOfServiceLink,
             hasAccounts,
         } = this.props;
-
         let serverError = null;
         if (this.state.serverError) {
             serverError = (
@@ -541,7 +583,6 @@ export default class SignupEmail extends React.PureComponent {
                         </span>
                         {emailSignup}
                         {serverError}
-                        {terms}
                     </div>
                 </div>
             </div>
